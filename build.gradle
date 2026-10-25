@@ -13,6 +13,30 @@ java {
     }
 }
 
+apply plugin: 'maven-publish'
+
+publishing {
+    publications {
+        create("maven", MavenPublication) {
+            artifact("build/libs/my-app-$version" + ".jar") {
+                extension 'jar'
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name 'nexus'
+            url "http://13.140.189.182:8081/repository/new-maven-snaphots/"
+            allowInsecureProtocol = true
+            credentials {
+                username project.repoUser
+                password project.repoPassword
+            }
+        }
+    }
+}
+
 repositories {
     mavenCentral()
     maven { url 'https://repo.spring.io/milestone' }
